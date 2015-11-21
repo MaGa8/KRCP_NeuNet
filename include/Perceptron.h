@@ -3,11 +3,14 @@
 
 #include <FeFoNetwork.h>
 
+#include <array>
 
 class Perceptron : public FeFoNetwork
 {
     public:
-        Perceptron();
+        Perceptron (const array <unsigned, 2>& neuronsPerLayer, const array <abstractActFunctor, 2>& activations);
+
+        double compute(const vector <double>& inVec);
     protected:
     private:
 };

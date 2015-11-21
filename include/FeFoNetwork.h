@@ -7,7 +7,10 @@
 class FeFoNetwork : public AbstractNetwork
 {
     public:
-        FeFoNetwork();
+        FeFoNetwork (const vector <unsigned>& neuronsPerLayer, const vector <abstractActFunctor>& activations);
+
+        double compute(const vector <double>& inVec);
+
     protected:
     private:
 };
