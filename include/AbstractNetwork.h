@@ -1,10 +1,12 @@
 #ifndef ABSTRACTNETWORK_H
 #define ABSTRACTNETWORK_H
 
+#include "Layer.h"
 
 class AbstractNetwork
 {
     public:
+/*
         class Sample
         {
         public:
@@ -57,6 +59,24 @@ class AbstractNetwork
         InputLayer mInLay;
         vector <HiddenLayer> mHidLays;
         OutputLayer mOutLay;
+*/
+		AbstractNetwork(int inputsCount, int layersCount);
+		virtual void Initialize();
+		int getNumberOfInputs();
+		int getNumberOfLayers();
+		vector<double> getOutput();
+		Layer& operator[](const size_t index);
+
+		virtual vector<double> Accumulate(vector<double> input) = 0;
+		virtual double Train(vector<double> input, vector<double> output) = 0;
+		virtual void SaveToDisk() = 0;
+		virtual void LoadFromDisk() = 0;
+
+	protected:
+		vector<Layer> theLayers;
+		vector<double> theOutput;
+		int theNumberOfInputs;
+		int theNumberOfLayers;
 };
 
 #endif // ABSTRACTNETWORK_H

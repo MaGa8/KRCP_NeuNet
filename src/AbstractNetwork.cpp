@@ -1,5 +1,6 @@
-#include "AbstractNetwork.h"
+#include "..\include\AbstractNetwork.h"
 
+/*
 Sample::Sample(const vector <int>& inVals, const vector <int>& outVals)
 {
 
@@ -49,3 +50,39 @@ void AbstractNetwork::createOutputLayer(const unsigned noNeurons, const abstract
 {
 
 }
+*/
+AbstractNetwork::AbstractNetwork(int inputsCount, int layersCount)
+	: theNumberOfInputs(inputsCount), theNumberOfLayers(layersCount)
+{}
+
+
+void AbstractNetwork::Initialize()
+{
+	for (auto layer : theLayers)
+	{
+		layer.Initialize();
+	}
+}
+
+int  AbstractNetwork::getNumberOfInputs()
+{
+	return theNumberOfInputs;
+}
+
+int  AbstractNetwork::getNumberOfLayers()
+{
+	return theNumberOfLayers;
+>>>>>>> origin/master
+}
+
+vector<double>  AbstractNetwork::getOutput()
+{
+	return theOutput;
+}
+
+Layer&  AbstractNetwork::operator[](const size_t index)
+{
+	return theLayers[index];
+}
+
+
