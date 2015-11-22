@@ -21,16 +21,14 @@ double Perceptron::Train(vector<double> input, vector<double> output)
 
 		if (errorDelta != 0)
 		{
-			Neuron perceptron = layer[curNeuron];
-
-			for (int curInput = 0; curInput < perceptron.getNumberOfInputs(); curInput++)
+			for (int curInput = 0; curInput < layer[curNeuron].getNumberOfInputs(); curInput++)
 			{
-				perceptron[curInput] += learningRate * errorDelta * input[curInput];
+				layer[curNeuron][curInput] += learningRate * errorDelta * input[curInput];
 			}
 
-			double threshold = perceptron.getThreshold();
+			double threshold = layer[curNeuron].getThreshold();
 			threshold += learningRate * errorDelta;
-			perceptron.setThreshold(threshold);
+			layer[curNeuron].setThreshold(threshold);
 
 			error += abs(errorDelta);
 		}
