@@ -1,9 +1,9 @@
 
-#include "Perceptron.h"
-#include "Neuron.h"
-#include "Layer.h"
-#include "StepFunction.h"
-#include "SigmoidFunction.h"
+#include "..\include\Perceptron.h"
+#include "..\include\Neuron.h"
+#include "..\include\Layer.h"
+#include "..\include\StepFunction.h"
+#include "..\include\SigmoidFunction.h"
 
 Perceptron logicOrTest ()
 {

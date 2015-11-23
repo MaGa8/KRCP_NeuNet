@@ -31,6 +31,7 @@ double Perceptron::Train(vector<double> input, vector<double> output)
 			layer[curNeuron].setThreshold(threshold);
 
 			error += abs(errorDelta);
+
 		}
 	}
 
