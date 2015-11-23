@@ -8,7 +8,8 @@ FeFoNetwork::FeFoNetwork(ActionPotentialFunction & func, int numberOfInputs, vec
 	: AbstractNetwork(numberOfInputs, numberOfNeurons.size())
 {
 	for (int i = 0; i < theNumberOfLayers; i++) {
-		Layer layer(numberOfNeurons[i], (i == 0) ? numberOfInputs : numberOfNeurons[i - 1], func);
+		Layer layer (numberOfNeurons[i], (theLayers.empty) ? numberOfInputs : theLayers.back().getNumberOfNeuron());
+		//Layer layer(numberOfNeurons[i], (i == 0) ? numberOfInputs : numberOfNeurons[i - 1], func);
 		theLayers.push_back(layer);
 	}
 }

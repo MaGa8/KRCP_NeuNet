@@ -1,13 +1,14 @@
 #include "..\include\Layer.h"
 
 Layer::Layer(int numberOfNeurons, int numberOfInputs, ActionPotentialFunction & func)
-	: theNumberOfNeurons(numberOfNeurons),
+	: theNumberOfNeurons (numberOfNeurons + 1),
 	theNumberOfInputs(numberOfInputs)
 {
 	for (int i = 0; i < theNumberOfNeurons; i++)
 	{
 		Neuron neuron(theNumberOfInputs, func);
 		theNeurons.push_back(neuron);
+		theNeurons.push_back (BiasNeuron());
 	}
 }
 
