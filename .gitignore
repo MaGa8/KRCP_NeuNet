@@ -3,3 +3,5 @@
 *.o
 #ignore cb-project files
 *.cbp
+#ignore .layout files
+*.layout
