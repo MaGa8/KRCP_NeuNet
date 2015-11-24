@@ -6,3 +6,6 @@
 #ignore .layout files
 *.layout
 *.depend
+
+#ignore binary folder
+/bin/*
