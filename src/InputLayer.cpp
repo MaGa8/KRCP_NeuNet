@@ -14,7 +14,7 @@ vector <double> InputLayer::Accumulate(vector<double> input)
         cout << endl;
     }
 
-    for (int i = 0; i < getNumberOfNeurons(); i++)
+    for (int i = 0; i < getNumberOfNeurons() - 1; i++)
 		theOutputs[i] = theNeurons[i].Accumulate(vector <double> ({input[i]}));
 
     if (debugging)
