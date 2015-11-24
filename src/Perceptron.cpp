@@ -94,3 +94,25 @@ double Perceptron::Train(vector<double> input, vector<double> output)
 	return error;
 
 }
+
+void Perceptron::trainAll (const vector <Sample>& samples)
+{
+    auto iSample = samples.begin();
+    while (iSample != samples.end())
+    {
+        cout << "train sample " << distance (samples.begin(), iSample) << endl;
+
+        bool immediateMatch = true;
+        double error = 0.0;
+        do
+        {
+            error = Train (iSample->first, iSample->second);
+            if (error != 0)
+                immediateMatch = false;
+        }while (error != 0);
+        if (!immediateMatch && iSample != samples.begin())
+            iSample = samples.begin();
+        else
+            ++iSample;
+    }
+}

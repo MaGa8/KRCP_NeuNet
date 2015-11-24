@@ -7,6 +7,7 @@
 #include "Layer.h"
 #include "StepFunction.h"
 #include "SigmoidFunction.h"
+#include "LinearFunction.h"
 
 using namespace std;
 
@@ -22,32 +23,7 @@ Perceptron logicOrTest ()
     samples.push_back (make_pair (vector <double> ({0, 1}), vector <double> ({1}) ));
     samples.push_back (make_pair (vector <double> ({1, 1}), vector <double> ({1}) ));
 
-    auto iTrainSample = samples.begin();
-    while (iTrainSample != samples.end())
-    {
-        double error = 0;
-        bool immediateMatch = true;
-        do
-        {
-            cout << "Train sample " << distance (samples.begin(), iTrainSample) << endl;
-            error = orNN.Train (iTrainSample->first, iTrainSample->second);
-            if (error != 0)
-                immediateMatch = false;
-            cout << "Error " << error << endl;
-        }while (error != 0);
-
-        if (!immediateMatch && iTrainSample != samples.begin())
-        {
-            iTrainSample = samples.begin();
-            cout << "Error, starting over" << endl;
-        }
-
-        else
-        {
-            ++iTrainSample;
-            cout << "No error, keep on going" << endl;
-        }
-    }
+    orNN.trainAll (samples);
 
     vector <double> testResult = orNN.Accumulate(samples[1].first);
     for_each (testResult.begin(), testResult.end(), [] (double out) {cout << out << ", ";});
@@ -57,22 +33,55 @@ Perceptron logicOrTest ()
 
 Perceptron logicAndTest ()
 {
+    StepFunction* pfunc = new StepFunction ();
+    Perceptron andNN (pfunc, 2, vector <int> ({2, 1}));
+    andNN.Initialize();
 
+    vector <pair <vector <double>, vector <double>>> samples;
+    samples.push_back (make_pair (vector <double> ({0, 0}), vector <double> ({0}) ));
+    samples.push_back (make_pair (vector <double> ({1, 0}), vector <double> ({0}) ));
+    samples.push_back (make_pair (vector <double> ({0, 1}), vector <double> ({0}) ));
+    samples.push_back (make_pair (vector <double> ({1, 1}), vector <double> ({1}) ));
+
+    andNN.trainAll (samples);
+
+    vector <double> testResult = andNN.Accumulate(samples[1].first);
+    for_each (testResult.begin(), testResult.end(), [] (double out) {cout << out << ", ";});
+    cout << endl;
+    cout << "training successful" << endl;
+    delete pfunc;
 }
 
 Perceptron linearFunctionTest ()
 {
+    LinearFunction* pfunc = new LinearFunction();
+    Perceptron linNN (pfunc, 1, vector <int> ({1, 1}));
+    linNN.Initialize();
 
+    //try 3x + 2;
+    vector <Sample> samples;
+    samples.push_back (make_pair (vector <double> ({1}), vector <double> ({5})));//x = 1
+    samples.push_back (make_pair (vector <double> ({6}), vector <double> ({20})));//x = 6
+    samples.push_back (make_pair (vector <double> ({-2}), vector <double> ({-4})));//x = -2
+
+    linNN.trainAll (samples);
+
+    cout << "training successful" << endl;
+    delete pfunc;
 }
 
 int main()
 {
-    Neuron::debugging = true;
-    Layer::debugging = true;
-    FeFoNetwork::debugging = true;
+    Neuron::debugging = false;
+    Layer::debugging = false;
+    FeFoNetwork::debugging = false;
 
 
-    logicOrTest();
+    //logicOrTest();
+
+    //logicAndTest();
+
+    linearFunctionTest();
 
     return 0;
 }
