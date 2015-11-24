@@ -1,7 +1,7 @@
 #ifndef NEURON_H
 #define NEURON_H
 
-#include "..\include\ActionPotentialFunction.h"
+#include "ActionPotentialFunction.h"
 #include <memory>
 #include <random>
 #include <vector>
@@ -11,21 +11,28 @@ using namespace std;
 class Neuron
 {
     public:
-		Neuron(const int inputs, ActionPotentialFunction& func);
+        static double INIT_EPSILON;
+
+		Neuron (const unsigned inputs, ActionPotentialFunction* func);
+		Neuron (const Neuron& copy);
+
+		Neuron operator = (const Neuron& copy);
+
 		void Initialize();
-		int getNumberOfInputs();
-		double getOutput();
+		unsigned getNumberOfInputs() const;
+		double getOutput() const;
 		double& operator[](const size_t index);
 		double Accumulate(vector<double> input);
+		/*
 		double getThreshold();
 		void setThreshold(double value);
-
+        */
     protected:
 		vector<double> theWeights;
-		ActionPotentialFunction * theActionPotentialFunc;
-		int theNumberOfInputs;
+		ActionPotentialFunction* theActionPotentialFunc;
+		unsigned theNumberOfInputs;
 		double theOutput;
-		double theThreshold;
+		//double theThreshold;
 };
 
 #endif // NEURON_H

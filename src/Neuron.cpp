@@ -1,25 +1,54 @@
-#include "..\include\Neuron.h"
+#include "Neuron.h"
 
-Neuron::Neuron(const int inputs, ActionPotentialFunction & func)
-	: theNumberOfInputs(inputs), theThreshold(0), theOutput(0), theActionPotentialFunc(&func)
+#include <assert.h>
+
+double Neuron::INIT_EPSILON = 0.000000001;
+
+Neuron::Neuron(const unsigned inputs, ActionPotentialFunction* func)
+	: theWeights (inputs), theActionPotentialFunc(func), theNumberOfInputs(inputs), theOutput((inputs == 0) ? 1 : 0)
 {}
+
+Neuron::Neuron (const Neuron& copy) :
+    theWeights (copy.theWeights),
+    theActionPotentialFunc (copy.theActionPotentialFunc),
+    theNumberOfInputs (copy.theNumberOfInputs),
+    theOutput (copy.theOutput)
+{
+
+}
+
+Neuron Neuron::operator = (const Neuron& copy)
+{
+    if (this != &copy)
+    {
+        theWeights = copy.theWeights;
+        theActionPotentialFunc = copy.theActionPotentialFunc;
+        theNumberOfInputs = copy.theNumberOfInputs;
+        theOutput = copy.theOutput;
+    }
+    return *this;
+}
 
 void Neuron::Initialize()
 {
 	random_device randDevice;
 	std::mt19937 generator(randDevice());
-	std::uniform_real_distribution<double> distribution(0.0, 1);
+	std::uniform_real_distribution<double> distribution(INIT_EPSILON, 1);
 
-	for (int i = 0; i < getNumberOfInputs(); i++)
-		theWeights[i] = distribution(generator);
+	for (unsigned i = 0; i < getNumberOfInputs(); i++)
+    {
+        theWeights[i] = distribution(generator);
+        assert (theWeights[i] != 0);
+    }
+
 }
 
-int Neuron::getNumberOfInputs()
+unsigned Neuron::getNumberOfInputs() const
 {
 	return theNumberOfInputs;
 }
 
-double Neuron::getOutput()
+double Neuron::getOutput() const
 {
 	return theOutput;
 }
@@ -28,7 +57,7 @@ double& Neuron::operator[](const size_t index)
 {
 	return theWeights[index];
 }
-
+/*
 double Neuron::getThreshold()
 {
 	return theThreshold;
@@ -38,22 +67,27 @@ void Neuron::setThreshold(double value)
 {
 	theThreshold = value;
 }
-
+*/
 double Neuron::Accumulate(vector<double> input)
 {
-	if (input.size() == getNumberOfInputs())
+	if (theNumberOfInputs == 0 && theActionPotentialFunc == nullptr)
+        return 1;
+	else if (input.size() == getNumberOfInputs())
 	{
 		double sum = 0.0;
 
-		for (int i = 0; i < getNumberOfInputs(); i++)
+		for (unsigned i = 0; i < getNumberOfInputs(); i++)
 		{
 			sum += theWeights[i] * input[i];
 		}
-
+        /*
 		sum += theThreshold;
+        */
 
 		theOutput = theActionPotentialFunc->Do(sum);
 
 		return theOutput;
 	}
+	else
+        return -1;
 }

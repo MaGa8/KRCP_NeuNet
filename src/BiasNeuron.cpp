@@ -1,6 +1,6 @@
 #include "BiasNeuron.h"
-
-BiasNeuron::BiasNeuron() {}
+/*
+BiasNeuron::BiasNeuron() : Neuron() {}
 
 void BiasNeuron::Initialize() {}
 
@@ -13,3 +13,4 @@ double BiasNeuron::getNumberOfInputs()
 {
     return 0;
 }
+*/

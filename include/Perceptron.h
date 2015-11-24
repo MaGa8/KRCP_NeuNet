@@ -8,7 +8,7 @@
 class Perceptron : public FeFoNetwork
 {
     public:
-        Perceptron(ActionPotentialFunction & func, int numberOfInputs, vector<int> numberOfNeurons);
+        Perceptron(ActionPotentialFunction* func, int numberOfInputs, vector<int> numberOfNeurons);
 		virtual double Train(vector<double> input, vector<double> output);
 };
 

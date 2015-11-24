@@ -1,9 +1,9 @@
 #ifndef OUTPUTLAYER_H
 #define OUTPUTLAYER_H
 
-#include <AbstractLayer.h>
+#include <Layer.h>
 
-
+/*
 class OutputLayer : public AbstractLayer
 {
     public:
@@ -11,5 +11,5 @@ class OutputLayer : public AbstractLayer
     protected:
     private:
 };
-
+*/
 #endif // OUTPUTLAYER_H

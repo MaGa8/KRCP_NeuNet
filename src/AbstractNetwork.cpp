@@ -1,4 +1,4 @@
-#include "..\include\AbstractNetwork.h"
+#include "AbstractNetwork.h"
 
 
 AbstractNetwork::AbstractNetwork(int inputsCount, int layersCount)
@@ -7,7 +7,7 @@ AbstractNetwork::AbstractNetwork(int inputsCount, int layersCount)
 
 void AbstractNetwork::Initialize()
 {
-	for (auto layer : theLayers)
+	for (auto& layer : theLayers)
 	{
 		layer.Initialize();
 	}

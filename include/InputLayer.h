@@ -1,13 +1,15 @@
 #ifndef INPUTLAYER_H
 #define INPUTLAYER_H
 
-#include <AbstractLayer.h>
+#include <Layer.h>
 
 
-class InputLayer : public AbstractLayer
+class InputLayer : public Layer
 {
     public:
-        InputLayer();
+        InputLayer (int numberOfNeurons, ActionPotentialFunction* func);
+
+        vector <double> Accumulate(vector<double> input);
     protected:
     private:
 };

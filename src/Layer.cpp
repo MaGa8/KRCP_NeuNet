@@ -1,20 +1,20 @@
-#include "..\include\Layer.h"
+#include "Layer.h"
 
-Layer::Layer(int numberOfNeurons, int numberOfInputs, ActionPotentialFunction & func)
-	: theNumberOfNeurons (numberOfNeurons + 1),
-	theNumberOfInputs(numberOfInputs)
+Layer::Layer(int numberOfNeurons, int numberOfInputs, ActionPotentialFunction* func)
+	: theOutputs (numberOfNeurons + 1), theNumberOfInputs(numberOfInputs), theNumberOfNeurons (numberOfNeurons)
 {
 	for (int i = 0; i < theNumberOfNeurons; i++)
 	{
 		Neuron neuron(theNumberOfInputs, func);
 		theNeurons.push_back(neuron);
-		theNeurons.push_back (BiasNeuron());
 	}
+	++theNumberOfNeurons;
+	theNeurons.push_back (Neuron (0, nullptr));
 }
 
 void Layer::Initialize()
 {
-	for (auto neuron : theNeurons)
+	for (auto& neuron : theNeurons)
 		neuron.Initialize();
 }
 
@@ -44,4 +44,15 @@ vector<double> Layer::Accumulate(vector<double> input)
 		theOutputs[i] = theNeurons[i].Accumulate(input);
 
 	return theOutputs;
+}
+
+void Layer::dbgOut (ostream& str)
+{
+    for (Neuron& n : theNeurons)
+    {
+        str << "output " << n.getOutput() << " ";
+        for (unsigned cwei = 0; cwei < n.getNumberOfInputs(); ++cwei)
+            str << n[cwei] << " ";
+        str << endl;
+    }
 }

@@ -1,10 +1,8 @@
 #include "StepFunction.h"
 
-StepFunction::StepFunction (double threshold) : ActionPotentialFunction (threshold) {}
+StepFunction::StepFunction () : ActionPotentialFunction () {}
 
 double StepFunction::Do (double x)
 {
-    if (x < getThreshold())
-        return 0;
-    return 1;
+    return ((x <= 0) ? 0 : 1);
 }

@@ -1,14 +1,15 @@
-#include "..\include\FeFoNetwork.h"
+#include "FeFoNetwork.h"
 #include <vector>
 #include <fstream>
 
 using namespace std;
 
-FeFoNetwork::FeFoNetwork(ActionPotentialFunction & func, int numberOfInputs, vector<int> numberOfNeurons)
-	: AbstractNetwork(numberOfInputs, numberOfNeurons.size())
+FeFoNetwork::FeFoNetwork(ActionPotentialFunction* func, int numberOfInputs, vector<int> numberOfNeurons)
+	: AbstractNetwork(numberOfInputs, numberOfNeurons.size()), inputLayer (numberOfNeurons[0], func)
 {
-	for (int i = 0; i < theNumberOfLayers; i++) {
-		Layer layer (numberOfNeurons[i], (theLayers.empty) ? numberOfInputs : theLayers.back().getNumberOfNeuron());
+	for (int i = 1; i < theNumberOfLayers; i++) {
+        unsigned passedNumberConnections = (theLayers.empty() ? numberOfInputs + 1 : theLayers.back().getNumberOfNeurons());
+		Layer layer (numberOfNeurons[i], (theLayers.empty()) ? numberOfInputs + 1: theLayers.back().getNumberOfNeurons(), func);
 		//Layer layer(numberOfNeurons[i], (i == 0) ? numberOfInputs : numberOfNeurons[i - 1], func);
 		theLayers.push_back(layer);
 	}
@@ -17,7 +18,7 @@ FeFoNetwork::FeFoNetwork(ActionPotentialFunction & func, int numberOfInputs, vec
 
 vector<double>  FeFoNetwork::Accumulate(vector<double> input)
 {
-	theOutput = input;
+	theOutput = inputLayer.Accumulate(input);
 
 	for (auto layer : theLayers)
 	{
@@ -29,6 +30,7 @@ vector<double>  FeFoNetwork::Accumulate(vector<double> input)
 
 void FeFoNetwork::SaveToDisk()
 {
+    /*
 	string somePath = "blablabla.txt";
 	ofstream writer (somePath.c_str());
 
@@ -46,12 +48,13 @@ void FeFoNetwork::SaveToDisk()
         writer << "END_LAYER" << endl;
     }
     writer.close();
-
+    */
     //TODO save activation function
 }
 
 void FeFoNetwork::LoadFromDisk()
 {
+	/*
 	String somePath = "blablabla.txt";
 	ifstrem reader (somePath.c_str());
 
@@ -75,4 +78,5 @@ void FeFoNetwork::LoadFromDisk()
             connectVals.push_back (stod (in));
     }
     FeFoNetwork (layers);
+    */
 }

@@ -1,6 +1,13 @@
 #include "InputLayer.h"
 
-InputLayer::InputLayer()
+InputLayer::InputLayer(int numberOfNeurons, ActionPotentialFunction* func) : Layer (numberOfNeurons, 1, func)
+{}
+
+vector <double> InputLayer::Accumulate(vector<double> input)
 {
-    //ctor
+    for (int i = 0; i < getNumberOfNeurons(); i++)
+		theOutputs[i] = theNeurons[i].Accumulate(vector <double> ({input[i]}));
+
+	return theOutputs;
 }
+

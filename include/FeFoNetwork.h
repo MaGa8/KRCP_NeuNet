@@ -8,12 +8,18 @@ class FeFoNetwork : public AbstractNetwork
 {
     public:
 
-		FeFoNetwork(ActionPotentialFunction & func, int numberOfInputs, vector<int> numberOfNeurons);
+		FeFoNetwork(ActionPotentialFunction* func, int numberOfInputs, vector<int> numberOfNeurons);
 		virtual vector<double> Accumulate(vector<double> input);
 		virtual double Train(vector<double> input, vector<double> output) = 0;
 
 		virtual void SaveToDisk();
 		virtual void LoadFromDisk();
+
+    protected:
+		InputLayer inputLayer;
+
+    private:
+
 };
 
 #endif // FEFONETWORK_H

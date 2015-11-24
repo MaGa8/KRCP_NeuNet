@@ -7,7 +7,7 @@
 class StepFunction : public ActionPotentialFunction
 {
     public:
-        StepFunction (double threshold);
+        StepFunction ();
 
         double Do (double x);
     protected:

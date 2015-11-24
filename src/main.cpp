@@ -1,20 +1,26 @@
 
-#include "..\include\Perceptron.h"
-#include "..\include\Neuron.h"
-#include "..\include\Layer.h"
-#include "..\include\StepFunction.h"
-#include "..\include\SigmoidFunction.h"
+#include <iostream>
+#include <algorithm>
+
+#include "Perceptron.h"
+#include "Neuron.h"
+#include "Layer.h"
+#include "StepFunction.h"
+#include "SigmoidFunction.h"
+
+using namespace std;
 
 Perceptron logicOrTest ()
 {
-    double threshold = 0;
-    Perceptron orNN (StepFunction (threshold), 2, vector <int> ({2, 1}));
+    StepFunction* pfunc = new StepFunction ();
+    Perceptron orNN (pfunc, 2, vector <int> ({2, 1}));
+    orNN.Initialize();
 
-    vector <pair <vector <double>, vector <double>> samples;
-    samples.push_back (make_pair ({0, 0}, {0}));
-    samples.push_back (make_pair ({1, 0}, {1}));
-    samples.push_back (make_pair ({0, 1}, {1}));
-    samples.push_back (make_pair ({1, 1}, {1}));
+    vector <pair <vector <double>, vector <double>>> samples;
+    samples.push_back (make_pair (vector <double> ({0, 0}), vector <double> ({0}) ));
+    samples.push_back (make_pair (vector <double> ({1, 0}), vector <double> ({1}) ));
+    samples.push_back (make_pair (vector <double> ({0, 1}), vector <double> ({1}) ));
+    samples.push_back (make_pair (vector <double> ({1, 1}), vector <double> ({1}) ));
 
     auto iTrainSample = samples.begin();
     while (iTrainSample != samples.end())
@@ -23,6 +29,7 @@ Perceptron logicOrTest ()
         bool immediateMatch = true;
         do
         {
+            cout << "Train sample " << distance (samples.begin(), iTrainSample) << endl;
             error = orNN.Train (iTrainSample->first, iTrainSample->second);
             if (error != 0)
                 immediateMatch = false;
@@ -33,6 +40,10 @@ Perceptron logicOrTest ()
         else
             ++iTrainSample;
     }
+
+    vector <double> testResult = orNN.Accumulate(samples[1].first);
+    for_each (testResult.begin(), testResult.end(), [] (double out) {cout << out << ", ";});
+    cout << endl;
 }
 
 Perceptron logicAndTest ()
@@ -47,7 +58,7 @@ Perceptron linearFunctionTest ()
 
 int main()
 {
-
+    logicOrTest();
 
     return 0;
 }

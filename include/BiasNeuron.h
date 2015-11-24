@@ -1,7 +1,7 @@
 #ifndef BIASNEURON_H
 #define BIASNEURON_H
 
-#include <Neuron.h>
+#include "Neuron.h"
 
 
 class BiasNeuron : public Neuron
