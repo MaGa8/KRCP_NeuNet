@@ -11,6 +11,7 @@ using namespace std;
 class Neuron
 {
     public:
+        static bool debugging;
         static double INIT_EPSILON;
 
 		Neuron (const unsigned inputs, ActionPotentialFunction* func);

@@ -33,17 +33,26 @@ Perceptron logicOrTest ()
             error = orNN.Train (iTrainSample->first, iTrainSample->second);
             if (error != 0)
                 immediateMatch = false;
+            cout << "Error " << error << endl;
         }while (error != 0);
 
-        if (!immediateMatch)
-            samples.insert (samples.end(), samples.begin(), iTrainSample);
+        if (!immediateMatch && iTrainSample != samples.begin())
+        {
+            iTrainSample = samples.begin();
+            cout << "Error, starting over" << endl;
+        }
+
         else
+        {
             ++iTrainSample;
+            cout << "No error, keep on going" << endl;
+        }
     }
 
     vector <double> testResult = orNN.Accumulate(samples[1].first);
     for_each (testResult.begin(), testResult.end(), [] (double out) {cout << out << ", ";});
     cout << endl;
+    cout << "training successful" << endl;
 }
 
 Perceptron logicAndTest ()
@@ -58,6 +67,11 @@ Perceptron linearFunctionTest ()
 
 int main()
 {
+    Neuron::debugging = true;
+    Layer::debugging = true;
+    FeFoNetwork::debugging = true;
+
+
     logicOrTest();
 
     return 0;

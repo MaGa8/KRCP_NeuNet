@@ -40,13 +40,8 @@ double Perceptron::Train(vector<double> input, vector<double> output)
     const double learningRate = 0.1;
 	vector <double> actOutput = Accumulate(input);
 
-	cout << "inputs ";
-    for_each (input.begin(), input.end(), [] (double err) {cout << err << ", "; });
-    cout << endl;
-
-    cout << "outputs ";
-    for_each (actOutput.begin(), actOutput.end(), [] (double err) {cout << err << ", "; });
-    cout << endl;
+    double storedInOutLayer = theLayers.back().getOutput()[0];
+    double NL2_1 = theLayers.back()[0].getOutput();
 
 	actOutput.erase (actOutput.end() - 1);
 	vector <double> errors (actOutput.size());
@@ -54,29 +49,46 @@ double Perceptron::Train(vector<double> input, vector<double> output)
         iact != actOutput.end(); ++iact, ++iexp, ++ierr)
         *ierr = *iact - *iexp;
 
+    cout << "inputs ";
+    for_each (input.begin(), input.end(), [] (double err) {cout << err << ", "; });
+    cout << endl;
+/*
+    cout << "outputs ";
+    for_each (actOutput.begin(), actOutput.end(), [] (double err) {cout << err << ", "; });
+    cout << endl;
 
     cout << "errors ";
     for_each (errors.begin(), errors.end(), [] (double err) {cout << err << ", "; });
     cout << endl;
-
+*/
     cout << "input layer before " << endl;
-    theLayers.front().dbgOut (cout);
+    theLayers.back().dbgOut (cout);
     Layer& lastLay = theLayers.back();
     for (unsigned cErr = 0; cErr < errors.size(); ++cErr)
     {
         if (errors[cErr] != 0)
         {
 
-            for (unsigned cWeights = 0; cWeights < lastLay.getNumberOfNeurons(); ++cWeights)
+            for (unsigned cWeights = 0; cWeights < lastLay.getNumberOfInputs(); ++cWeights)
             {
                 const double temp = lastLay[cErr][cWeights];
-                lastLay[cErr][cWeights] += learningRate * errors[cErr] * inputLayer[cWeights].getOutput();
+                lastLay[cErr][cWeights] -= learningRate * errors[cErr] * inputLayer[cWeights].getOutput();
                 assert (inputLayer[cWeights].getOutput() == 0 || temp == 0 || temp != lastLay[cErr][cWeights]);
+
+                if (inputLayer[cWeights].getOutput() == 0)
+                    cout << "No output, no change" << endl;
+                else if (temp == 0)
+                    cout << "No connection, no change" << endl;
+                else if (temp != lastLay[cErr][cWeights])
+                    cout << "change happended" << endl;
+                else
+                    cout << "strange stuff happened" << endl;
+
             }
         }
     }
     cout << "input layer after " << endl;
-    theLayers.front().dbgOut (cout);
+    theLayers.back().dbgOut (cout);
 
     double error = accumulate (errors.begin(), errors.end(), 0, plus <double>());
 	return error;

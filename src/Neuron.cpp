@@ -1,11 +1,14 @@
 #include "Neuron.h"
 
 #include <assert.h>
+#include <iostream>
+#include <algorithm>
 
 double Neuron::INIT_EPSILON = 0.000000001;
+bool Neuron::debugging = true;
 
 Neuron::Neuron(const unsigned inputs, ActionPotentialFunction* func)
-	: theWeights (inputs), theActionPotentialFunc(func), theNumberOfInputs(inputs), theOutput((inputs == 0) ? 1 : 0)
+	: theWeights (inputs, 1), theActionPotentialFunc(func), theNumberOfInputs(inputs), theOutput((inputs == 0) ? 1 : 0)
 {}
 
 Neuron::Neuron (const Neuron& copy) :
@@ -70,8 +73,19 @@ void Neuron::setThreshold(double value)
 */
 double Neuron::Accumulate(vector<double> input)
 {
+	if (debugging)
+    {
+        cout << "Neuron input ";
+        for_each (input.begin(), input.end(), [] (double out) {cout << out << ", ";});
+        cout << endl;
+        cout << "Neuron output ";
+    }
 	if (theNumberOfInputs == 0 && theActionPotentialFunc == nullptr)
+    {
+        if (debugging)
+            cout << 1 << endl;
         return 1;
+    }
 	else if (input.size() == getNumberOfInputs())
 	{
 		double sum = 0.0;
@@ -85,9 +99,14 @@ double Neuron::Accumulate(vector<double> input)
         */
 
 		theOutput = theActionPotentialFunc->Do(sum);
-
+        if (debugging)
+            cout << theOutput << endl;
 		return theOutput;
 	}
 	else
+    {
+        if (debugging)
+            cout << -1 << endl;
         return -1;
+    }
 }

@@ -1,5 +1,11 @@
 #include "Layer.h"
 
+#include <iostream>
+#include <algorithm>
+#include <assert.h>
+
+bool Layer::debugging = true;
+
 Layer::Layer(int numberOfNeurons, int numberOfInputs, ActionPotentialFunction* func)
 	: theOutputs (numberOfNeurons + 1), theNumberOfInputs(numberOfInputs), theNumberOfNeurons (numberOfNeurons)
 {
@@ -40,8 +46,21 @@ Neuron& Layer::operator[](const size_t index)
 
 vector<double> Layer::Accumulate(vector<double> input)
 {
+    if (debugging)
+    {
+        cout << "Layer input ";
+        for_each (input.begin(), input.end(), [] (double out) {cout << out << ", ";});
+        cout << endl;
+    }
+	assert (input.size() == getNumberOfInputs());
 	for (int i = 0; i < getNumberOfNeurons(); i++)
 		theOutputs[i] = theNeurons[i].Accumulate(input);
+    if (debugging)
+    {
+        cout << "Layer output ";
+        for_each (theOutputs.begin(), theOutputs.end(), [] (double out) {cout << out << ", ";});
+        cout << endl;
+    }
 
 	return theOutputs;
 }

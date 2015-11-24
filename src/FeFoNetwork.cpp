@@ -1,15 +1,19 @@
 #include "FeFoNetwork.h"
 #include <vector>
 #include <fstream>
+#include <iostream>
+#include <algorithm>
 
 using namespace std;
+
+bool FeFoNetwork::debugging = true;
 
 FeFoNetwork::FeFoNetwork(ActionPotentialFunction* func, int numberOfInputs, vector<int> numberOfNeurons)
 	: AbstractNetwork(numberOfInputs, numberOfNeurons.size()), inputLayer (numberOfNeurons[0], func)
 {
 	for (int i = 1; i < theNumberOfLayers; i++) {
-        unsigned passedNumberConnections = (theLayers.empty() ? numberOfInputs + 1 : theLayers.back().getNumberOfNeurons());
-		Layer layer (numberOfNeurons[i], (theLayers.empty()) ? numberOfInputs + 1: theLayers.back().getNumberOfNeurons(), func);
+        unsigned passedNumberConnections = (theLayers.empty() ? inputLayer.getNumberOfNeurons() : theLayers.back().getNumberOfNeurons());
+		Layer layer (numberOfNeurons[i], (theLayers.empty()) ? inputLayer.getNumberOfNeurons() : theLayers.back().getNumberOfNeurons(), func);
 		//Layer layer(numberOfNeurons[i], (i == 0) ? numberOfInputs : numberOfNeurons[i - 1], func);
 		theLayers.push_back(layer);
 	}
@@ -18,14 +22,27 @@ FeFoNetwork::FeFoNetwork(ActionPotentialFunction* func, int numberOfInputs, vect
 
 vector<double>  FeFoNetwork::Accumulate(vector<double> input)
 {
+	if (debugging)
+    {
+        cout << "Network input ";
+        for_each (input.begin(), input.end(), [] (double out) {cout << out << ", ";});
+        cout << endl;
+        cout << "Network accumulate - input level" << endl;
+    }
 	theOutput = inputLayer.Accumulate(input);
-
-	for (auto layer : theLayers)
+    if (debugging)
+        cout << "Network accumulate - rest" << endl;
+	for (auto& layer : theLayers)
 	{
 		theOutput = layer.Accumulate(theOutput);
 	}
-
-	return theOutput;
+	if (debugging)
+    {
+        cout << "Network output ";
+        for_each (theOutput.begin(), theOutput.end(), [] (double out) {cout << out << ", ";});
+        cout << endl;
+    }
+    return theOutput;
 }
 
 void FeFoNetwork::SaveToDisk()

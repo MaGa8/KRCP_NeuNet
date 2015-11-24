@@ -7,6 +7,8 @@
 class Layer
 {
     public:
+        static bool debugging;
+
 		Layer (int numberOfNeurons, int numberOfInputs, ActionPotentialFunction* func);
 		virtual void Initialize();
 		int getNumberOfInputs();

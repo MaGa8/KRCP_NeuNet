@@ -7,6 +7,8 @@
 class FeFoNetwork : public AbstractNetwork
 {
     public:
+        static bool debugging;
+
 
 		FeFoNetwork(ActionPotentialFunction* func, int numberOfInputs, vector<int> numberOfNeurons);
 		virtual vector<double> Accumulate(vector<double> input);
