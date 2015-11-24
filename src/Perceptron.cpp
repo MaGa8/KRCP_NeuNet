@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <functional>
 #include <iostream>
+#include <numeric>
 
 Perceptron::Perceptron(ActionPotentialFunction* func, int numberOfInputs, vector<int> numberOfNeurons)
 	:FeFoNetwork(func, numberOfInputs, numberOfNeurons)
