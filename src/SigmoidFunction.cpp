@@ -17,5 +17,5 @@ SigmoidFunction::SigmoidFunction (double numParam, double denomParam) :
 // 1 / 1 + e^x => a / b + e ^x, b =! 0
 double SigmoidFunction::Do(double x)
 {
-    return mNumParam / (mDenomParam + pow (euNum, x));
+    return mNumParam / (mDenomParam + pow (euNum, -x));
 }

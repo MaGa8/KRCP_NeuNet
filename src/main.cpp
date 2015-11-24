@@ -55,6 +55,7 @@ Perceptron logicAndTest ()
 Perceptron linearFunctionTest ()
 {
     LinearFunction* pfunc = new LinearFunction();
+
     Perceptron linNN (pfunc, 1, vector <int> ({1, 1}));
     linNN.Initialize();
 
@@ -77,7 +78,7 @@ int main()
     FeFoNetwork::debugging = false;
 
 
-    //logicOrTest();
+    logicOrTest();
 
     //logicAndTest();
 

@@ -5,3 +5,4 @@
 *.cbp
 #ignore .layout files
 *.layout
+*.depend
