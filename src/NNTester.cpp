@@ -174,5 +174,5 @@ double NNTester::verify(const size_t numSamples, LinSamGen* pSamGen)
             cout << " " << hit.second.first << " | " << hit.second.second << endl;
         }
     }
-    return (double)(trueFalseCnt.first / (trueFalseCnt.first + trueFalseCnt.second));
+    return ((double)trueFalseCnt.first / (double)(trueFalseCnt.first + trueFalseCnt.second));
 }
