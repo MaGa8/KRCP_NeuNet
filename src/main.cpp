@@ -104,14 +104,14 @@ void homGenTest()
     }
 }
 
-void bigLinTest (unsigned totSamples, unsigned steps, double testDelta, double trainDelta, pair <double, double> testLims, pair <double, double> trainLims, unsigned testSamples)
+void bigLinTest (unsigned totSamples, unsigned minIts, unsigned maxIts, unsigned deltaIts, double testDelta, double trainDelta, pair <double, double> testLims, pair <double, double> trainLims, unsigned testSamples)
 {
     double a = 2, b = 1;
 
     //shifts balance between iterations <-> samples per iteration
-    for (unsigned cBal = 1; cBal <= ceil (totSamples / steps); ++cBal)
+    for (unsigned noIts = minIts; noIts <= maxIts; noIts += deltaIts)
     {
-        unsigned noIts = steps * cBal;
+        //unsigned noIts = steps * cBal;
         unsigned noSams = totSamples / noIts;
 
         NNTester::RandLinSamGen randSamGenNonIncr (a, b, trainDelta, trainLims);
@@ -207,7 +207,7 @@ int main()
     //randGenTest();
     //homGenTest();
 
-    bigLinTest (800, 50, 1000, 10, make_pair (-10000, 10000), make_pair (-1000, 1000), 1000);
+    bigLinTest (10000, 100, 500, 100, 1000, 10, make_pair (-10000, 10000), make_pair (-1000, 1000), 1000);
 
     return 0;
 }
