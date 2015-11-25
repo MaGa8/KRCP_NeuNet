@@ -101,7 +101,7 @@ void Perceptron::trainAll (const vector <Sample>& samples)
     auto iSample = samples.begin();
     while (iSample != samples.end())
     {
-        /*
+/*
         cout << "train sample " << distance (samples.begin(), iSample) << endl;
         cout << "inputs provided ";
         for_each (iSample->first.begin(), iSample->first.end(), [] (double err) {cout << err << ", "; });
@@ -109,8 +109,8 @@ void Perceptron::trainAll (const vector <Sample>& samples)
 
         cout << "outputs expected ";
         for_each (iSample->second.begin(), iSample->second.end(), [] (double err) {cout << err << ", "; });
-        cout << endl;*/
-
+        cout << endl;
+*/
         bool immediateMatch = true;
         double error = 0.0;
         do
