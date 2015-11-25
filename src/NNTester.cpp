@@ -58,16 +58,22 @@ Sample NNTester::PartLinSamGen::operator() ()
     mt19937 randGen (rdev());
     uniform_real_distribution <double> xdist;
     if (mCntFirstPartSamples > 0)
-    {
         //generate samples below line
         xdist = uniform_real_distribution <double> (mYlim.first / ma - mb - mDelta, mYlim.second / ma - mb);
-        --mCntFirstPartSamples;
-    }
     else
         xdist = uniform_real_distribution <double> (mYlim.first / ma - mb + epsilon, mYlim.second / ma - mb + mDelta);
 
     double xrand = xdist (randGen);
-    uniform_real_distribution <double> ydist (ma * xrand + mb - mDelta, ma * xrand + mb + mDelta);
+
+    uniform_real_distribution <double> ydist;
+    if (mCntFirstPartSamples > 0)
+    {
+        ydist = uniform_real_distribution <double> (ma * xrand + mb - mDelta, ma * xrand + mb);
+        --mCntFirstPartSamples;
+    }
+    else
+        ydist = uniform_real_distribution <double> (ma * xrand + mb + epsilon, ma * xrand + mb + mDelta);
+
     double yrand = ydist (randGen);
     //true if sample above line
     double result = (double)(ma * xrand + mb < yrand);
@@ -103,6 +109,13 @@ void NNTester::trainRandom(const size_t iterations, const size_t samPerIt, LinSa
         mPtron.trainFast(samples);
     }
 }
+
+void NNTester::trainCombo (const size_t iterations, const size_t samPerIt, const double addDelta, LinSamGen* const pIncrSamGen, LinSamGen* const pRandSamGen)
+{
+    trainIncreasing (ceil (iterations / 2), samPerIt, addDelta, pIncrSamGen);
+    trainRandom (floor (iterations / 2), samPerIt, pRandSamGen);
+}
+
 
 double NNTester::verify(const size_t numSamples, LinSamGen* pSamGen)
 {

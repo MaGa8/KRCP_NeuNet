@@ -59,6 +59,8 @@ class NNTester
 
         void trainRandom (const size_t iterations, const size_t samPerIt, LinSamGen* const pSamGen);
 
+        void trainCombo (const size_t iterations, const size_t samPerIt, const double addDelta, LinSamGen* const pIncrSamGen, LinSamGen* const pRandSamGen);
+
         double verify (const size_t numSamples, LinSamGen* pSamGen);
 
     protected:
