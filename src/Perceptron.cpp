@@ -49,11 +49,11 @@ double Perceptron::Train(vector<double> input, vector<double> output)
     for (auto iact = actOutput.begin(), iexp = output.begin(), ierr = errors.begin();
         iact != actOutput.end(); ++iact, ++iexp, ++ierr)
         *ierr = *iact - *iexp;
-
+/*
     cout << "inputs ";
     for_each (input.begin(), input.end(), [] (double err) {cout << err << ", "; });
     cout << endl;
-/*
+
     cout << "outputs ";
     for_each (actOutput.begin(), actOutput.end(), [] (double err) {cout << err << ", "; });
     cout << endl;
@@ -62,8 +62,8 @@ double Perceptron::Train(vector<double> input, vector<double> output)
     for_each (errors.begin(), errors.end(), [] (double err) {cout << err << ", "; });
     cout << endl;
 */
-    cout << "input layer before " << endl;
-    theLayers.back().dbgOut (cout);
+ //   cout << "input layer before " << endl;
+ //   theLayers.back().dbgOut (cout);
     Layer& lastLay = theLayers.back();
     for (unsigned cErr = 0; cErr < errors.size(); ++cErr)
     {
@@ -75,7 +75,7 @@ double Perceptron::Train(vector<double> input, vector<double> output)
                 const double temp = lastLay[cErr][cWeights];
                 lastLay[cErr][cWeights] -= learningRate * errors[cErr] * inputLayer[cWeights].getOutput();
                 assert (inputLayer[cWeights].getOutput() == 0 || temp == 0 || temp != lastLay[cErr][cWeights]);
-
+/*
                 if (inputLayer[cWeights].getOutput() == 0)
                     cout << "No output, no change" << endl;
                 else if (temp == 0)
@@ -84,12 +84,12 @@ double Perceptron::Train(vector<double> input, vector<double> output)
                     cout << "change happended" << endl;
                 else
                     cout << "strange stuff happened" << endl;
-
+*/
             }
         }
     }
-    cout << "input layer after " << endl;
-    theLayers.back().dbgOut (cout);
+//    cout << "input layer after " << endl;
+//    theLayers.back().dbgOut (cout);
 
     double error = accumulate (errors.begin(), errors.end(), 0, plus <double>());
 	return error;
@@ -101,7 +101,15 @@ void Perceptron::trainAll (const vector <Sample>& samples)
     auto iSample = samples.begin();
     while (iSample != samples.end())
     {
+        /*
         cout << "train sample " << distance (samples.begin(), iSample) << endl;
+        cout << "inputs provided ";
+        for_each (iSample->first.begin(), iSample->first.end(), [] (double err) {cout << err << ", "; });
+        cout << endl;
+
+        cout << "outputs expected ";
+        for_each (iSample->second.begin(), iSample->second.end(), [] (double err) {cout << err << ", "; });
+        cout << endl;*/
 
         bool immediateMatch = true;
         double error = 0.0;
@@ -115,5 +123,17 @@ void Perceptron::trainAll (const vector <Sample>& samples)
             iSample = samples.begin();
         else
             ++iSample;
+    }
+}
+
+void Perceptron::trainFast (const vector <Sample>& samples)
+{
+    for (Sample sm : samples)
+    {
+        double error = 0;
+        do
+        {
+            error = Train (sm.first, sm.second);
+        }while (error != 0);
     }
 }

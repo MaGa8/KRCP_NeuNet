@@ -16,6 +16,8 @@ class Perceptron : public FeFoNetwork
 		virtual double Train(vector<double> input, vector<double> output);
 
 		void trainAll (const vector <Sample>& samples);
+
+		void trainFast (const vector <Sample>& sampes);
 };
 
 #endif // PERCEPTRON_H
