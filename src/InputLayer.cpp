@@ -2,7 +2,7 @@
 #include <iostream>
 #include <algorithm>
 
-InputLayer::InputLayer(int numberOfNeurons, ActionPotentialFunction* func) : Layer (numberOfNeurons, 1, func)
+InputLayer::InputLayer(int numberOfNeurons, ActionPotentialFunction* func) : Layer (numberOfNeurons, 1, &theLinearFunction)
 {}
 
 vector <double> InputLayer::Accumulate(vector<double> input)

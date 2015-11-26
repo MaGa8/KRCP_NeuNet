@@ -2,6 +2,7 @@
 #define INPUTLAYER_H
 
 #include <Layer.h>
+#include "LinearFunction.h"
 
 
 class InputLayer : public Layer
@@ -12,6 +13,7 @@ class InputLayer : public Layer
         vector <double> Accumulate(vector<double> input);
     protected:
     private:
+		LinearFunction theLinearFunction;
 };
 
 #endif // INPUTLAYER_H

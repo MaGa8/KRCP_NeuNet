@@ -82,6 +82,8 @@ void linearFunctionTest ()
     vector <Sample> samples;
     samples.push_back (make_pair (vector <double> ({1, 3.5}), vector <double> ({1})));
     samples.push_back (make_pair (vector <double> ({1, 2.5}), vector <double> ({0})));
+	samples.push_back(make_pair(vector <double>({2, 6 }), vector <double>({ 1 })));
+	samples.push_back(make_pair(vector <double>({2, 1 }), vector <double>({ 0 })));
     /*samples.push_back (make_pair (vector <double> ({5, 11.25}), vector <double> ({1})));
     samples.push_back (make_pair (vector <double> ({5, 10.75}), vector <double> ({0})));
     samples.push_back (make_pair (vector <double> ({-3, -4.75}), vector <double> ({1})));
@@ -233,21 +235,21 @@ int main()
     Neuron::debugging = false;
     Layer::debugging = false;
     FeFoNetwork::debugging = false;
-    NNTester::addInfo = false;
+    NNTester::addInfo = true;
 
 
     //logicOrTest();
 
     //logicAndTest();
 
-    linearFunctionTest();
+    //linearFunctionTest();
 
     //randGenTest();
     //homGenTest();
 
 
-    //NNTester::debugging = true;
-    //nnTesterTest();
+    NNTester::debugging = true;
+    nnTesterTest();
 
 
 
