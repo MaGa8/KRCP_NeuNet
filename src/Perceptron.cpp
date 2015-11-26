@@ -96,44 +96,85 @@ double Perceptron::Train(vector<double> input, vector<double> output)
 
 }
 
-void Perceptron::trainAll (const vector <Sample>& samples)
+void Perceptron::trainAll (vector <Sample> samples)
 {
     auto iSample = samples.begin();
     while (iSample != samples.end())
     {
-/*
-        cout << "train sample " << distance (samples.begin(), iSample) << endl;
-        cout << "inputs provided ";
-        for_each (iSample->first.begin(), iSample->first.end(), [] (double err) {cout << err << ", "; });
-        cout << endl;
+        if (debugging)
+        {
+            cout << "train sample " << distance (samples.begin(), iSample) << endl;
+            cout << "inputs provided ";
+            for_each (iSample->first.begin(), iSample->first.end(), [] (double err) {cout << err << ", "; });
+            cout << endl;
 
-        cout << "outputs expected ";
-        for_each (iSample->second.begin(), iSample->second.end(), [] (double err) {cout << err << ", "; });
-        cout << endl;
-*/
+            cout << "outputs expected ";
+            for_each (iSample->second.begin(), iSample->second.end(), [] (double err) {cout << err << ", "; });
+            cout << endl;
+        }
+
         bool immediateMatch = true;
         double error = 0.0;
         do
         {
+            cout << "Try... ";
             error = Train (iSample->first, iSample->second);
             if (error != 0)
+            {
+                /*
+                if (iSample != samples.begin())
+                {
+                    cout << "Backtrack from " << distance (samples.begin(), iSample) << endl;
+                    Sample temp = *iSample;
+                    samples.erase (iSample);
+                    samples.insert (samples.begin(), temp);
+
+                    iSample = samples.begin();
+                }*/
                 immediateMatch = false;
+            }
+            if (debugging)
+            {
+                cout << " === weights ===" << endl;
+                dbgOut(cout);
+            }
         }while (error != 0);
+        cout << "trainded sample " << distance (samples.begin(), iSample) << endl;
         if (!immediateMatch && iSample != samples.begin())
+        {
+            cout << "Backtrack from " << distance (samples.begin(), iSample) << endl;
+
             iSample = samples.begin();
+        }
         else
             ++iSample;
     }
 }
 
-void Perceptron::trainFast (const vector <Sample>& samples)
+void Perceptron::trainFast (vector <Sample> samples)
 {
-    for (Sample sm : samples)
+    for (auto iSample = samples.begin(); iSample != samples.end(); ++iSample)
     {
+        if (debugging)
+        {
+            cout << "train sample " << distance (samples.begin(), iSample) << endl;
+            cout << "inputs provided ";
+            for_each (iSample->first.begin(), iSample->first.end(), [] (double err) {cout << err << ", "; });
+            cout << endl;
+
+            cout << "outputs expected ";
+            for_each (iSample->second.begin(), iSample->second.end(), [] (double err) {cout << err << ", "; });
+            cout << endl;
+        }
         double error = 0;
         do
         {
-            error = Train (sm.first, sm.second);
+            if (debugging)
+            {
+                error = Train (iSample->first, iSample->second);
+                cout << " === weights ===" << endl;
+                dbgOut(cout);
+            }
         }while (error != 0);
     }
 }

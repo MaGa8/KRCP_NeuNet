@@ -13,6 +13,16 @@ void AbstractNetwork::Initialize()
 	}
 }
 
+void AbstractNetwork::dbgOut (ostream& out)
+{
+    for (auto iLay = theLayers.begin(); iLay != theLayers.end(); ++iLay)
+    {
+        out << "Layer " << distance (theLayers.begin(), iLay) << endl;
+        iLay->dbgOut (out);
+    }
+
+}
+
 int  AbstractNetwork::getNumberOfInputs()
 {
 	return theNumberOfInputs;

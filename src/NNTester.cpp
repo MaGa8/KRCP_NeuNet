@@ -87,7 +87,7 @@ NNTester::NNTester(ActionPotentialFunction* actFunc, const int& numberOfInputs, 
     mPtron.Initialize();
 }
 
-void NNTester::trainIncreasing(const size_t iterations, const size_t samPerIt, const double addDelta, LinSamGen* const pSamGen)
+void NNTester::trainIncreasing(const size_t iterations, const size_t samPerIt, const double addDelta, LinSamGen* const pSamGen, bool fastTraining)
 {
     vector <Sample> samples (samPerIt);
     for (size_t cIter = 0; cIter < iterations; ++cIter)
@@ -95,25 +95,31 @@ void NNTester::trainIncreasing(const size_t iterations, const size_t samPerIt, c
         pSamGen->setDelta (pSamGen->getDelta() + addDelta);
         for (auto& sam : samples)
             sam = (*pSamGen)();
-        mPtron.trainFast(samples);
+        if (fastTraining)
+            mPtron.trainFast(samples);
+        else
+            mPtron.trainAll (samples);
     }
 }
 
-void NNTester::trainRandom(const size_t iterations, const size_t samPerIt, LinSamGen* const pSamGen)
+void NNTester::trainRandom(const size_t iterations, const size_t samPerIt, LinSamGen* const pSamGen, bool fastTraining)
 {
     vector <Sample> samples (samPerIt);
     for (size_t cIter = 0; cIter < iterations; ++cIter)
     {
         for (auto& sam : samples)
             sam = (*pSamGen)();
-        mPtron.trainFast(samples);
+        if (fastTraining)
+            mPtron.trainFast(samples);
+        else
+            mPtron.trainAll (samples);
     }
 }
 
-void NNTester::trainCombo (const size_t iterations, const size_t samPerIt, const double addDelta, LinSamGen* const pIncrSamGen, LinSamGen* const pRandSamGen)
+void NNTester::trainCombo (const size_t iterations, const size_t samPerIt, const double addDelta, LinSamGen* const pIncrSamGen, LinSamGen* const pRandSamGen, bool fastTraining)
 {
-    trainIncreasing (ceil (iterations / 2), samPerIt, addDelta, pIncrSamGen);
-    trainRandom (floor (iterations / 2), samPerIt, pRandSamGen);
+    trainIncreasing (ceil (iterations / 2), samPerIt, addDelta, pIncrSamGen, fastTraining);
+    trainRandom (floor (iterations / 2), samPerIt, pRandSamGen, fastTraining);
 }
 
 
@@ -175,4 +181,9 @@ double NNTester::verify(const size_t numSamples, LinSamGen* pSamGen)
         }
     }
     return ((double)trueFalseCnt.first / (double)(trueFalseCnt.first + trueFalseCnt.second));
+}
+
+void NNTester::printNet()
+{
+    mPtron.dbgOut (cout);
 }

@@ -55,13 +55,15 @@ class NNTester
 
         NNTester(ActionPotentialFunction* actFunc, const int& numberOfInputs, const vector<int>& numberOfNeurons);
 
-        void trainIncreasing (const size_t iterations, const size_t samPerIt, const double addDelta, LinSamGen* const pSamGen);
+        void trainIncreasing (const size_t iterations, const size_t samPerIt, const double addDelta, LinSamGen* const pSamGen, bool fastTraining = true);
 
-        void trainRandom (const size_t iterations, const size_t samPerIt, LinSamGen* const pSamGen);
+        void trainRandom (const size_t iterations, const size_t samPerIt, LinSamGen* const pSamGen, bool fastTraining = true);
 
-        void trainCombo (const size_t iterations, const size_t samPerIt, const double addDelta, LinSamGen* const pIncrSamGen, LinSamGen* const pRandSamGen);
+        void trainCombo (const size_t iterations, const size_t samPerIt, const double addDelta, LinSamGen* const pIncrSamGen, LinSamGen* const pRandSamGen, bool fastTraining = true);
 
         double verify (const size_t numSamples, LinSamGen* pSamGen);
+
+        void printNet();
 
     protected:
     private:

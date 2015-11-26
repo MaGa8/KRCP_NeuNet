@@ -97,3 +97,11 @@ void FeFoNetwork::LoadFromDisk()
     FeFoNetwork (layers);
     */
 }
+
+
+void FeFoNetwork::dbgOut (ostream& out)
+{
+    cout << "Input layer " << endl;
+    inputLayer.dbgOut (out);
+    AbstractNetwork::dbgOut (out);
+}

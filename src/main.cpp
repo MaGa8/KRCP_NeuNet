@@ -49,27 +49,46 @@ Perceptron logicAndTest ()
 
     andNN.trainAll (samples);
 
-    vector <double> testResult = andNN.Accumulate(samples[1].first);
+    /*vector <double> testResult = andNN.Accumulate(samples[1].first);
     for_each (testResult.begin(), testResult.end(), [] (double out) {cout << out << ", ";});
-    cout << endl;
+    cout << endl;*/
     cout << "training successful" << endl;
+    cout << "State of network" << endl;
+    andNN.dbgOut(cout);
 
     return andNN;
 }
 
 void linearFunctionTest ()
 {
-    NNTester::addInfo = true;
-
+/*
     StepFunction linActFun = StepFunction();
     NNTester tester (&linActFun, 2, vector <int> ({2, 1}));
 
-    NNTester::RandLinSamGen randSamples (2, 1, 10, make_pair (-10000, 10000));
+    NNTester::RandLinSamGen randSamples (2, 1, 1, make_pair (-100, 100));
     cout << "training..." << endl;
-    tester.trainIncreasing (250, 50, 2, &randSamples);
+    tester.trainIncreasing (1, 10, 0, &randSamples, false);
     cout << "verifying" << endl;
     randSamples.setDelta (100);
-    tester.verify (1000, &randSamples);
+
+    NNTester::addInfo = false;
+    tester.verify (10, &randSamples);
+
+    tester.printNet();
+*/
+    StepFunction ActFun;
+    Perceptron ptron (&ActFun, 2, vector <int> ({2, 1}));
+    ptron.Initialize();
+    vector <Sample> samples;
+    samples.push_back (make_pair (vector <double> ({1, 3.5}), vector <double> ({1})));
+    samples.push_back (make_pair (vector <double> ({1, 2.5}), vector <double> ({0})));
+    /*samples.push_back (make_pair (vector <double> ({5, 11.25}), vector <double> ({1})));
+    samples.push_back (make_pair (vector <double> ({5, 10.75}), vector <double> ({0})));
+    samples.push_back (make_pair (vector <double> ({-3, -4.75}), vector <double> ({1})));
+    samples.push_back (make_pair (vector <double> ({-3, -5.25}), vector <double> ({0})));*/
+
+    ptron.trainAll (samples);
+    ptron.dbgOut (cout);
 }
 
 void randGenTest()
@@ -102,6 +121,16 @@ void homGenTest()
         for_each (sam.second.begin(), sam.second.end(), [] (double i) {cout << i << " "; });
         cout << endl;
     }
+}
+
+void nnTesterTest()
+{
+    StepFunction step;
+    NNTester test (&step, 2, vector <int> ({2, 1}));
+    NNTester::RandLinSamGen samGen (2, 1, 10, make_pair (-1000, 1000));
+    test.trainIncreasing(5, 3, 10, &samGen);
+
+    test.verify(100, &samGen);
 }
 
 void bigLinTest (unsigned totSamples, unsigned minIts, unsigned maxIts, unsigned deltaIts, double testDelta, double trainDelta, pair <double, double> testLims, pair <double, double> trainLims, unsigned testSamples)
@@ -185,10 +214,18 @@ void bigLinTest (unsigned totSamples, unsigned minIts, unsigned maxIts, unsigned
     }
 }
 
-
-void linTestCombTrainers ()
+void launchbigTest ()
 {
+    size_t numSamples = 5000, minIters = 1, maxIters = 10, deltaIters = 1, testSamples = 250;
+    pair <double, double> trainLim (-100, 100), testLim (-10000, 10000), trainDeltas (10, 100);
+    double testDelta = 1000, addDelta = 9;
 
+    for (double cDelta = trainDeltas.first; cDelta <= trainDeltas.second; cDelta += addDelta)
+    {
+        cout << "Training delta " << cDelta << endl;
+        bigLinTest (numSamples, minIters, maxIters, deltaIters, testDelta, cDelta, testLim, trainLim, testSamples);
+        cout << endl;
+    }
 }
 
 int main()
@@ -196,18 +233,24 @@ int main()
     Neuron::debugging = false;
     Layer::debugging = false;
     FeFoNetwork::debugging = false;
+    NNTester::addInfo = false;
 
 
     //logicOrTest();
 
     //logicAndTest();
 
-    //linearFunctionTest();
+    linearFunctionTest();
 
     //randGenTest();
     //homGenTest();
 
-    bigLinTest (10000, 100, 500, 100, 1000, 10, make_pair (-10000, 10000), make_pair (-1000, 1000), 1000);
+
+    //NNTester::debugging = true;
+    //nnTesterTest();
+
+
+
 
     return 0;
 }

@@ -15,9 +15,9 @@ class Perceptron : public FeFoNetwork
         Perceptron(ActionPotentialFunction* func, int numberOfInputs, vector<int> numberOfNeurons);
 		virtual double Train(vector<double> input, vector<double> output);
 
-		void trainAll (const vector <Sample>& samples);
+		void trainAll (vector <Sample> samples);
 
-		void trainFast (const vector <Sample>& sampes);
+		void trainFast (vector <Sample> sampes);
 };
 
 #endif // PERCEPTRON_H

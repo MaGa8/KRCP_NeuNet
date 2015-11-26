@@ -17,6 +17,8 @@ class FeFoNetwork : public AbstractNetwork
 		virtual void SaveToDisk();
 		virtual void LoadFromDisk();
 
+		virtual void dbgOut (ostream& out);
+
     protected:
 		InputLayer inputLayer;
 

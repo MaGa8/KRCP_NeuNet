@@ -13,6 +13,7 @@ class AbstractNetwork
 		int getNumberOfLayers();
 		vector<double> getOutput();
 		Layer& operator[](const size_t index);
+		virtual void dbgOut (ostream& out);
 
 		virtual vector<double> Accumulate(vector<double> input) = 0;
 		virtual double Train(vector<double> input, vector<double> output) = 0;

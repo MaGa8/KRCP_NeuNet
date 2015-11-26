@@ -67,11 +67,11 @@ vector<double> Layer::Accumulate(vector<double> input)
 
 void Layer::dbgOut (ostream& str)
 {
-    for (Neuron& n : theNeurons)
+    for (auto iNeu = theNeurons.begin(); iNeu != theNeurons.end(); ++iNeu)
     {
-        str << "output " << n.getOutput() << " ";
-        for (unsigned cwei = 0; cwei < n.getNumberOfInputs(); ++cwei)
-            str << n[cwei] << " ";
-        str << endl;
+        str << "Neuron " << distance (theNeurons.begin(), iNeu) << "; weights ";
+        for (unsigned cwei = 0; cwei < iNeu->getNumberOfInputs(); ++cwei)
+            str << (*iNeu)[cwei] << " ";
+        str << " => output " << iNeu->getOutput() << endl;
     }
 }
